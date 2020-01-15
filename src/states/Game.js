@@ -59,22 +59,19 @@ export default class extends Phaser.State {
       });
     });
 
-    this.holes.forEach(hole => {
-      hole.occupied = hole.x !== 1 * GRID_SIZE_X || hole.y !== 5 * GRID_SIZE_Y;
+    this.startText = this.game.add.text(0, 0, 'Select a position to leave blank.', {
+      font: '20px Ibarra Real Nova',
+      fill: '#000',
+      boundsAlignH: 'center',
+      boundsAlignV: 'middle',
     });
+    this.startText.setTextBounds(0, 360, 400, 40);
 
-    this.score = 0;
-    // this.scoreText = this.game.add.text(0, 0, 'Score: 0', {
-    //   font: '20px Ibarra Real Nova',
-    //   fill: '#000',
-    //   boundsAlignH: 'center',
-    //   boundsAlignV: 'middle',
-    // });
-    // this.scoreText.setTextBounds(0, 360, 400, 40);
+    this.startChosen = false;
   }
 
   buildHole(x, y) {
-    const hole = new Hole({ x, y, game: this.game, occupied: false });
+    const hole = new Hole({ x, y, game: this.game, occupied: true });
     hole.events.onInputUp.add(() => this.onInputUp(hole));
     hole.events.onInputOver.add(() => this.onInputOver(hole));
     hole.events.onInputOut.add(() => this.onInputOut(hole));
@@ -95,11 +92,16 @@ export default class extends Phaser.State {
     }
   }
 
-  update() {
-    // this.scoreText.text = `Score: ${this.score}`;
-  }
+  update() {}
 
   onInputUp(hole) {
+    if (!this.startChosen) {
+      hole.occupied = false;
+      this.startChosen = true;
+      this.startText.destroy();
+      return;
+    }
+
     if (this.game.selectedHole) {
       if (this.game.selectedHole === hole) {
         hole.deselect();
@@ -112,7 +114,6 @@ export default class extends Phaser.State {
             const pathHole = this.holeForId(holeId);
             pathHole.occupied = i === path.length - 1;
           }
-          this.score++;
           this.game.selectedHole.deselect();
           this.game.selectedHole = null;
         }
