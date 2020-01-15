@@ -1,6 +1,6 @@
 # Mushroom I.Q. Tester
 
-Started with [Phaser ES6 Webpack project](https://github.com/lean/phaser-es6-webpack).
+![game](game.png)
 
 # Setup
 You'll need to install a few things before you have a working copy of the project.
@@ -81,3 +81,7 @@ before you get to work you will surely want to check the config file. You could 
 
 ## Webfonts:
 In the config file you can specify which webfonts you want to include. In case you do not want to use webfonts simply leave the array empty
+
+# Credits
+
+Started with [Phaser ES6 Webpack project](https://github.com/lean/phaser-es6-webpack).
