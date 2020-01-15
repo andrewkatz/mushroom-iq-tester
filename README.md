@@ -1,25 +1,6 @@
-# Phaser + ES6 + Webpack.
-#### A bootstrap project to create games with Phaser + ES6 + Webpack.
+# Mushroom I.Q. Tester
 
-![Phaser+ES6+Webpack](https://raw.githubusercontent.com/lean/phaser-es6-webpack/master/assets/images/phaser-es6-webpack.jpg)
-
-
-[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
-
-## Phaser 3 supported in this branch: https://github.com/lean/phaser-es6-webpack/tree/phaser3
-## Typescript supported in this branch: https://github.com/lean/phaser-es6-webpack/tree/typescript
-
-## Features
-- ESLINT with JavaScript Standard Style configuration
-- Next generation of Javascript
-- Browsers are automatically updated as you change project files
-- Webpack ready
-- WebFont Loader
-- Multilanguage support
-- PWA Support
-
-## Typescript 
-If you need typescript support checkout the ```typescript``` branch. Thanks to @MatsMaker
+Started with ![Phaser ES6 Webpack project](https://github.com/lean/phaser-es6-webpack).
 
 # Setup
 You'll need to install a few things before you have a working copy of the project.
@@ -30,7 +11,7 @@ Navigate into your workspace directory.
 
 Run:
 
-```git clone https://github.com/lean/phaser-es6-webpack.git```
+```git clone https://github.com/andrewkatz/mushroom-iq-tester```
 
 ## 2. Install node.js and npm:
 
@@ -100,14 +81,3 @@ before you get to work you will surely want to check the config file. You could 
 
 ## Webfonts:
 In the config file you can specify which webfonts you want to include. In case you do not want to use webfonts simply leave the array empty
-
-## Credits
-Big thanks to these great repos:
-
-https://github.com/belohlavek/phaser-es6-boilerplate
-
-https://github.com/cstuncsik/phaser-es6-demo
-
-## Contributors
-
-https://github.com/RenaudROHLINGER
