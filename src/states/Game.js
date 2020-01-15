@@ -4,16 +4,16 @@ import _ from 'lodash';
 import Graph from 'graph-data-structure';
 
 import lang from '../lang';
-import Hole, { GRID_SIZE } from '../sprites/Hole';
+import Hole, { GRID_SIZE_X, GRID_SIZE_Y } from '../sprites/Hole';
 
 const hasEdge = (a, b) => {
   // Same row, to the right
-  if (a.y === b.y && a.x - b.x === -2 * GRID_SIZE) {
+  if (a.y === b.y && a.x - b.x === -2 * GRID_SIZE_X) {
     return true;
   }
 
   // Above and within range
-  if (a.y - b.y === 1 * GRID_SIZE && Math.abs(a.x - b.x) === GRID_SIZE) {
+  if (a.y - b.y === 1 * GRID_SIZE_Y && Math.abs(a.x - b.x) === GRID_SIZE_X) {
     return true;
   }
 
@@ -60,15 +60,24 @@ export default class extends Phaser.State {
     });
 
     this.holes.forEach(hole => {
-      hole.occupied = hole.x !== 1 * GRID_SIZE || hole.y !== 5 * GRID_SIZE;
+      hole.occupied = hole.x !== 1 * GRID_SIZE_X || hole.y !== 5 * GRID_SIZE_Y;
     });
 
-    console.log(this.game.graph.serialize());
+    this.score = 0;
+    // this.scoreText = this.game.add.text(0, 0, 'Score: 0', {
+    //   font: '20px Ibarra Real Nova',
+    //   fill: '#000',
+    //   boundsAlignH: 'center',
+    //   boundsAlignV: 'middle',
+    // });
+    // this.scoreText.setTextBounds(0, 360, 400, 40);
   }
 
   buildHole(x, y) {
     const hole = new Hole({ x, y, game: this.game, occupied: false });
     hole.events.onInputUp.add(() => this.onInputUp(hole));
+    hole.events.onInputOver.add(() => this.onInputOver(hole));
+    hole.events.onInputOut.add(() => this.onInputOut(hole));
     this.holes.push(hole);
     this.game.add.existing(hole);
     return hole.holeId;
@@ -82,14 +91,18 @@ export default class extends Phaser.State {
 
   render() {
     if (__DEV__) {
-      this.lines.forEach(l => this.game.debug.geom(l));
+      // this.lines.forEach(l => this.game.debug.geom(l));
     }
+  }
+
+  update() {
+    // this.scoreText.text = `Score: ${this.score}`;
   }
 
   onInputUp(hole) {
     if (this.game.selectedHole) {
       if (this.game.selectedHole === hole) {
-        hole.selected = false;
+        hole.deselect();
         this.game.selectedHole = null;
       } else if (!hole.occupied) {
         const path = this.game.graph.shortestPath(this.game.selectedHole.holeId, hole.holeId);
@@ -99,14 +112,23 @@ export default class extends Phaser.State {
             const pathHole = this.holeForId(holeId);
             pathHole.occupied = i === path.length - 1;
           }
-          this.game.selectedHole.selected = false;
+          this.score++;
+          this.game.selectedHole.deselect();
           this.game.selectedHole = null;
         }
       }
     } else {
       this.game.selectedHole = hole;
-      hole.selected = true;
+      hole.select();
     }
+  }
+
+  onInputOver(hole) {
+    hole.highlighted = true;
+  }
+
+  onInputOut(hole) {
+    hole.highlighted = false;
   }
 
   holeForId(holeId) {
@@ -125,8 +147,8 @@ export default class extends Phaser.State {
       const p = this.holeForId(path[i]);
       const q = this.holeForId(path[i + 1]);
 
-      const yDiff = (p.y - q.y) / GRID_SIZE;
-      const xDiff = (p.x - q.x) / GRID_SIZE;
+      const yDiff = p.holeY - q.holeY;
+      const xDiff = p.holeX - q.holeX;
 
       if (i === 0) {
         masterYDiff = yDiff;
