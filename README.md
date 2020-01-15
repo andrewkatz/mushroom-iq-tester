@@ -1,6 +1,6 @@
 # Mushroom I.Q. Tester
 
-Started with ![Phaser ES6 Webpack project](https://github.com/lean/phaser-es6-webpack).
+Started with [Phaser ES6 Webpack project](https://github.com/lean/phaser-es6-webpack).
 
 # Setup
 You'll need to install a few things before you have a working copy of the project.
